@@ -1,20 +1,10 @@
-const server = require("express");
-const app = server();
+require("dotenv").config();
+const http = require("http");
+const app = require("./app/app");
 
-const singleLogger = (req, res, next) => {
-  console.log(`${req.url} ${req.method} ${new Date().toISOString()}`);
-  const name = req.query.name;
-  if (name == "trishan") {
-    return res.json({ message: "Bad Requiest" });
-  } else {
-    next();
-  }
-};
+const server = http.createServer(app);
 
-app.get("/hello", singleLogger, (req, res, next) => {
-  res.json({ message: "hello" });
-});
-
-app.listen(8080, () => {
-  console.log("Server is listening on port 8080");
+const PORT = process.env.PORT || 8000;
+server.listen(PORT, () => {
+  console.log("listening on port " + PORT);
 });
